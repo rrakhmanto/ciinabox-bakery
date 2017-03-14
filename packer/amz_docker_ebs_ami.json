@@ -23,11 +23,7 @@
         "delete_on_termination": true
       },
       {
-<<<<<<< HEAD
-        "device_name": "/dev/xvdg",
-=======
         "device_name": "/dev/xvdf",
->>>>>>> feature/ebssize
         "volume_size": "{{ user `docker_volume_size` }}",
         "volume_type": "gp2",
         "delete_on_termination": true
@@ -41,11 +37,7 @@
         "delete_on_termination": true
       },
       {
-<<<<<<< HEAD
-        "device_name": "/dev/xvdg",
-=======
         "device_name": "/dev/xvdf",
->>>>>>> feature/ebssize
         "volume_size": "{{ user `docker_volume_size` }}",
         "volume_type": "gp2",
         "delete_on_termination": true
