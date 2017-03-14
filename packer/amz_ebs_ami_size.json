@@ -13,44 +13,18 @@
     "vpc_id":	"{{ user `vpc_id` }}",
     "subnet_id": "{{ user `subnet_id` }}",
     "ssh_username": "ec2-user",
+    "ami_block_device_mappings": [ {
+      "device_name": "/dev/xvda",
+      "volume_size": "{{ user `bake_volume_size` }}",
+      "delete_on_termination": true
+    } ],
+    "launch_block_device_mappings": [ {
+      "device_name": "/dev/xvda",
+      "volume_size": "{{ user `bake_volume_size` }}",
+      "delete_on_termination": true
+    } ],
     "ssh_pty": true,
     "security_group_id": "{{ user `security_group` }}",
-    "ami_block_device_mappings": [
-      {
-        "device_name": "/dev/xvda",
-        "volume_size": "{{ user `bake_volume_size` }}",
-        "volume_type": "gp2",
-        "delete_on_termination": true
-      },
-      {
-<<<<<<< HEAD
-        "device_name": "/dev/xvdg",
-=======
-        "device_name": "/dev/xvdf",
->>>>>>> feature/ebssize
-        "volume_size": "{{ user `docker_volume_size` }}",
-        "volume_type": "gp2",
-        "delete_on_termination": true
-      }
-    ],
-    "launch_block_device_mappings": [
-      {
-        "device_name": "/dev/xvda",
-        "volume_size": "{{ user `bake_volume_size` }}",
-        "volume_type": "gp2",
-        "delete_on_termination": true
-      },
-      {
-<<<<<<< HEAD
-        "device_name": "/dev/xvdg",
-=======
-        "device_name": "/dev/xvdf",
->>>>>>> feature/ebssize
-        "volume_size": "{{ user `docker_volume_size` }}",
-        "volume_type": "gp2",
-        "delete_on_termination": true
-      }
-    ],
     "run_tags": {
       "Name": "Packer {{ user `ami_name` }} (Amazon Linux)"
     },
@@ -63,8 +37,7 @@
   "provisioners": [
     {
       "type": "shell",
-      "inline": [
-        "sudo mkdir -p /etc/chef",
+      "inline": ["sudo mkdir -p /etc/chef",
         "sudo chmod -R 777 /etc/chef",
         "mkdir -p /tmp/packer-chef-client/",
         "chmod 0755 /tmp/packer-chef-client"
@@ -133,7 +106,6 @@
     "packer_role":"packer",
     "packer_instance_profile":"packer",
     "instance_type":"m3.medium",
-    "bake_volume_size":"8",
-    "docker_volume_size":"8"
+    "bake_volume_size":"8"
   }
 }

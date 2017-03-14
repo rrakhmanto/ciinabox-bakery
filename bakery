@@ -40,6 +40,25 @@ if [[ ! x${CHEF_VERSION} == "x" ]]; then
   log info "using chef_version ${CHEF_VERSION}"
 fi
 
+if [[ ! x${CB_BUILD_NO} == "x" ]]; then
+  CLI_OPTS="${CLI_OPTS} -var cb_buld_no=${CB_BUILD_NO}"
+  log info "using cb_buld_no ${CB_BUILD_NO}"
+fi
+
+if [[ ! x${SOURCE_BUCKET} == "x" ]]; then
+  CLI_OPTS="${CLI_OPTS} -var source_bucket=${SOURCE_BUCKET}"
+  log info "using source_bucket ${SOURCE_BUCKET}"
+fi
+
+if [[ ! x${BUCKET_REGION} == "x" ]]; then
+  CLI_OPTS="${CLI_OPTS} -var bucket_region=${BUCKET_REGION}"
+  log info "using bucket_region ${BUCKET_REGION}"
+fi
+
+if [[ ! x${CHEF_PATH} == "x" ]]; then
+  CLI_OPTS="${CLI_OPTS} -var chef_path=${CHEF_PATH}"
+  log info "using chef_path ${CHEF_PATH}"
+fi
 
 CLI_OPTS="${CLI_OPTS} -var ami_name=${AMI_TYPE}"
 CLI_OPTS="${CLI_OPTS} -var build_no=${BUILD_NUMBER}"
@@ -79,9 +98,14 @@ if [[ ! x${11} == "x" ]]; then
   log info "using bake_volume_size ${11}"
 fi
 
+if [[ ${DEBUG} == "true" ]]; then
+  CLI_OPTS="-debug ${CLI_OPTS}"
+  log info "debug is on"
+fi
+
 echo "{\"${CLIENT}\":{\"version\":\"${BUILD_NUMBER}\",\"build_id\":\"${7}\",\"build_sha\":\"${8}\"}}" > build/override.json
 
-/opt/packer/packer build -machine-readable -var-file=${PACKER_BUILD_PARAMS} ${CLI_OPTS} ${PACKER_BUILD_TMPL} | tee build/build.log
+/opt/packer/packer build -machine-readable -var-file=${PACKER_BUILD_PARAMS} ${CLI_OPTS} ${PACKER_BUILD_TMPL} ${DEBUG_FLAG} | tee build/build.log
 
 #extract base AMI-ID
 AMI_ID=`cat build/build.log | tr -d '\000' | grep 'artifact,0,id' | cut -d, -f6 | cut -d: -f2`
