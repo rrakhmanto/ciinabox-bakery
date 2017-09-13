@@ -1,0 +1,51 @@
+{
+  "builders": [{
+    "type": "amazon-ebs",
+    "region": "{{ user `region` }}",
+    "source_ami": "{{ user `source_ami` }}",
+    "instance_type": "{{ user `instance_type` }}",
+    "iam_instance_profile":"{{ user `packer_instance_profile`}}",
+    "ami_name": "{{ user `client`}}-{{ user `ami_name` }}-{{ user `build_no` }}",
+    "ami_regions": "{{ user `ami_regions`}}",
+    "ami_users": "{{ user `ami_users`}}",
+    "access_key": "{{ user `access_key` }}",
+    "secret_key": "{{ user `secret_key` }}",
+    "vpc_id":	"{{ user `vpc_id` }}",
+    "subnet_id": "{{ user `subnet_id` }}",
+    "ssh_username": "{{ user `ssh_username` }}",
+    "ssh_pty": true,
+    "security_group_id": "{{ user `security_group` }}",
+    "run_tags": {
+      "Name": "Packer {{ user `ami_name` }} (Amazon Linux)"
+    }
+  }],
+  "provisioners": [
+    {
+      "type": "shell-local",
+      "source": "printenv"
+    }
+  ],
+  "variables": {
+    "access_key": "",
+    "secret_key": "",
+    "source_ami": "",
+    "ami_name":"",
+    "vpc_id": "",
+    "subnet_id": "" ,
+    "security_group": "" ,
+    "region": "",
+    "build_no": "",
+    "build_id": "",
+    "build_sha": "",
+    "chef_run_list":"",
+    "chef_version":"latest",
+    "ami_regions":"",
+    "ami_users":"",
+    "packer_role":"packer",
+    "packer_instance_profile":"packer",
+    "instance_type":"m3.medium",
+    "bake_volume_size":"8",
+    "device_name":"/dev/xvda",
+    "ssh_username":"ec2-user"
+  }
+}
